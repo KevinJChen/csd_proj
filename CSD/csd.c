@@ -237,70 +237,72 @@ matrix* csdeconv(float* R_RH, matrix* DW_SH, matrix* HR_SH, matrix* S, float lam
         assignMat(k->row, HR_SH->col, dHRSH, second);
         scalarMat(lambda, second);
         free(dHRSH);
-//        freeMat(second);
 
-//        /* --- */ float* dM = malloc((second->row+nfconv->row)*second->col*sizeof(float));
-//        /* --- */ double* ddM = malloc((second->row+nfconv->row)*second->col*sizeof(double));
-//
-//        int dMcounter = 0;
-//        int fcounter = 0;
-//        int secondcounter = 0;
-//        for (int i = 0; i < second->row+nfconv->row; i++)
-//        {
-//            for (int j = 0; j< second->col; j++)
-//            {
-//                if (i < nfconv->row)
-//                {
-//                    dM[dMcounter] = nfconv->data[fcounter];
-//                    ddM[dMcounter] = nfconv->data[fcounter];
-//                    fcounter++;
-//                }
-//                else
-//                {
-//                    dM[dMcounter] = second->data[secondcounter];
-//                    ddM[dMcounter] = second->data[secondcounter];
-//                    secondcounter++;
-//                }
-//                dMcounter++;
-//            }
-//        }
-//
-////        /* --- */ matrix M = assignMat((second.row+nfconv.row), second.col, dM);
-//
-//        matrix* M = malloc(sizeof(matrix));
-//        assignMat((second->row+nfconv->row), second->col, dM, M);
-//
-//        float* dfF_SH = malloc(M->row*M->col*sizeof(float));
-//        /* --- */ double* dS2 = malloc((S->row+k->row)*sizeof(double));
-//
-//        for (int i = 0; i < S->row+k->row; i++)
-//        {
-//            if (i < S->row)
-//            {
-//                dS2[i] = dS1[i];
-//            } else
-//            {
-//                dS2[i] = 0;
-//            }
-//        }
-//
-//        /* --- */ double*dF_SH2 = malloc(M->col*M->row*sizeof(double));
-//        dF_SH2 = qr_solve(M->row, M->col, ddM, dS1);
-//
-//        /* --- */ float* ddfF_SH = malloc(M->col*sizeof(float));
-//        for (int i = 0; i < M->col; i++)
-//        {
-//            ddfF_SH[i] = dF_SH2[i];
-//        }
-//        assignMat(M->col, 1, ddfF_SH, F_SH);
-//
-//        free(dM);
-//        free(ddM);
-//        free(dfF_SH);
+        /* --- */ float* dM = malloc((second->row+nfconv->row)*second->col*sizeof(float));
+        /* --- */ double* ddM = malloc((second->row+nfconv->row)*second->col*sizeof(double));
+
+        int dMcounter = 0;
+        int fcounter = 0;
+        int secondcounter = 0;
+        for (int i = 0; i < second->row+nfconv->row; i++)
+        {
+            for (int j = 0; j< second->col; j++)
+            {
+                if (i < nfconv->row)
+                {
+                    dM[dMcounter] = nfconv->data[fcounter];
+                    ddM[dMcounter] = nfconv->data[fcounter];
+                    fcounter++;
+                }
+                else
+                {
+                    dM[dMcounter] = second->data[secondcounter];
+                    ddM[dMcounter] = second->data[secondcounter];
+                    secondcounter++;
+                }
+                dMcounter++;
+            }
+        }
+
+//        /* --- */ matrix M = assignMat((second.row+nfconv.row), second.col, dM);
+
+        matrix* M = malloc(sizeof(matrix));
+        assignMat((second->row+nfconv->row), second->col, dM, M);
+
+        float* dfF_SH = malloc(M->row*M->col*sizeof(float));
+        /* --- */ double* dS2 = malloc((S->row+k->row)*sizeof(double));
+
+        for (int i = 0; i < S->row+k->row; i++)
+        {
+            if (i < S->row)
+            {
+                dS2[i] = dS1[i];
+            } else
+            {
+                dS2[i] = 0;
+            }
+        }
+
+        /* --- */ double*dF_SH2 = malloc(M->col*M->row*sizeof(double));
+        dF_SH2 = qr_solve(M->row, M->col, ddM, dS1);
+
+        /* --- */ float* ddfF_SH = malloc(M->col*sizeof(float));
+        for (int i = 0; i < M->col; i++)
+        {
+            ddfF_SH[i] = dF_SH2[i];
+        }
+        assignMat(M->col, 1, ddfF_SH, F_SH);
+
+        free(dM);
+        free(ddM);
+        free(dfF_SH);
 //        free(dS2);
-//        free(dF_SH2);
-//        free(ddfF_SH);
-//        freeMat(M);
+        free(dF_SH2);
+        free(ddfF_SH);
+        
+        
+        
+//      freeMat(M);
 //        freeMat(second);
 
     }
